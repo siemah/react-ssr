@@ -16,13 +16,23 @@ export default class Grid extends Component {
     }
   }
 
-  componentDidMount() {
-
-    !this.state.repos && this.props.fetchInitialData()
+  fetchRepos(lang) {
+    this.setState({loading: true,})
+    this.props.fetchInitialData(lang)
       .then(repos => this.setState({repos, loading: false,}))
       .catch(err => this.setState({loading: false, repos: []}))
   }
 
+  componentDidMount() {
+    console.log(this.props)
+    !this.state.repos && this.fetchRepos(this.props.match.params.id)
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.match.params.id !== prevProps.match.params.id)
+      this.fetchRepos(this.props.match.params.id)
+  }
+  
 
   render() {
     const { repos, loading, } = this.state;
