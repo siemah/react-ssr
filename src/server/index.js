@@ -4,6 +4,7 @@ import serialize from 'serialize-javascript'
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../shared/App';
+import { fetchPopularRepos, } from '../shared/api';
 
 const app = express();
 
@@ -16,12 +17,16 @@ app.use(express.static("public"));
 
 // handle all routes
 app.get('*', (req, res) => {
-  const data='siemah';
-  const _markup = renderToString(<App data={data} />);
-  res.send(getHtmlSkeleton(_markup, data));
+  fetchPopularRepos(req.path)
+    .then( data => {
+      const _markup = renderToString(<App data={data} />);
+      res.send(getHtmlSkeleton(_markup, data));
+    })
+    .catch(err => console.log(err.message))
+
 });
 
-function getHtmlSkeleton(markup, data=null) {
+function getHtmlSkeleton(markup, data = null) {
   return `<!DOCTYPE html>
     <html>
       <head>
