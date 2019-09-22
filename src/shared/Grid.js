@@ -17,15 +17,19 @@ export default class Grid extends Component {
   }
 
   fetchRepos(lang) {
-    this.setState({loading: true,})
+    this._isMounted && this.setState({loading: true,})
     this.props.fetchInitialData(lang)
-      .then(repos => this.setState({repos, loading: false,}))
-      .catch(err => this.setState({loading: false, repos: []}))
+      .then(repos => this._isMounted && this.setState({repos, loading: false,}))
+      .catch(err => this._isMounted && this.setState({loading: false, repos: []}))
   }
 
   componentDidMount() {
-    console.log(this.props)
+    this._isMounted = true;
     !this.state.repos && this.fetchRepos(this.props.match.params.id)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   componentDidUpdate(prevProps) {
@@ -43,7 +47,7 @@ export default class Grid extends Component {
           loading
             ? <h4>Loading ..</h4>
             : (
-              repos.map(({ name, owner, stargazers_count, html_url }) => (
+              repos && repos.map(({ name, owner, stargazers_count, html_url }) => (
                 <li key={name} style={{ margin: 30 }}>
                   <ul>
                     <li><a href={html_url}>{name}</a></li>
