@@ -3,8 +3,9 @@ import cors from "cors";
 import serialize from 'serialize-javascript'
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { matchPath, StaticRouter, } from 'react-router-dom';
 import App from '../shared/App';
-import { fetchPopularRepos, } from '../shared/api';
+import routes from '../shared/routes';
 
 const app = express();
 
@@ -16,14 +17,25 @@ app.use(cors());
 app.use(express.static("public"));
 
 // handle all routes
-app.get('*', (req, res) => {
-  fetchPopularRepos(req.path)
+app.get('*', (req, res, next) => {
+  // find the matched route requested by user
+  let _activeRoute = routes.find(route => matchPath(req.url, route)) || {};
+  console.log(_activeRoute);
+  // verify if active route has data 2 fetch then return promise
+  let _promiseResponse = _activeRoute.fetchInitialData 
+    ? _activeRoute.fetchInitialData(req.path)
+    : Promise.resolve();
+  // render the right component
+  _promiseResponse
     .then( data => {
-      const _markup = renderToString(<App data={data} />);
+      const _markup = renderToString(
+        <StaticRouter location={req.url} context={{data}}>
+          <App data={data} />
+        </StaticRouter>
+      );
       res.send(getHtmlSkeleton(_markup, data));
     })
-    .catch(err => console.log(err.message))
-
+    .catch(next)
 });
 
 function getHtmlSkeleton(markup, data = null) {
