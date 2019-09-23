@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import serialize from 'serialize-javascript'
 import React from 'react';
+import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { matchPath, StaticRouter, } from 'react-router-dom';
 import App from '../shared/App';
@@ -32,16 +33,19 @@ app.get('*', (req, res, next) => {
           <App />
         </StaticRouter>
       );
-      res.send(getHtmlSkeleton(_markup, data));
+      const helmetData = Helmet.renderStatic();
+      res.send(getHtmlSkeleton(_markup, helmetData, data));
     })
     .catch(next)
 });
 
-function getHtmlSkeleton(markup, data = null) {
+function getHtmlSkeleton(markup, helmetData, data=null) {
   return `<!DOCTYPE html>
     <html>
       <head>
         <title>React SSR app</title>
+        ${ helmetData.title.toString() }
+        ${ helmetData.meta.toString() }
         <script src="/bundle.js" defer></script>
         <script>window.__INITIAL_DATA__ = ${serialize(data)}</script>
       </head>
