@@ -1,7 +1,9 @@
 // shared/routes.js
 import Home from './Home'
 import Grid from './Grid'
+import Book from './Book'
 import { fetchPopularRepos } from './api'
+import { fetchBook } from './api'
 
 const routes =  [
   {
@@ -15,6 +17,11 @@ const routes =  [
     fetchInitialData: (path = '') => fetchPopularRepos(
       path.split('/').pop()
     ),
+  },
+  {
+    path: '/books',
+    component: Book,
+    fetchInitialData: (book = null) => fetchBook(),
   }
 ]
 
