@@ -20,7 +20,6 @@ app.use(express.static("public"));
 app.get('*', (req, res, next) => {
   // find the matched route requested by user
   let _activeRoute = routes.find(route => matchPath(req.url, route)) || {};
-  console.log(_activeRoute);
   // verify if active route has data 2 fetch then return promise
   let _promiseResponse = _activeRoute.fetchInitialData 
     ? _activeRoute.fetchInitialData(req.path)
@@ -30,7 +29,7 @@ app.get('*', (req, res, next) => {
     .then( data => {
       const _markup = renderToString(
         <StaticRouter location={req.url} context={{data}}>
-          <App data={data} />
+          <App />
         </StaticRouter>
       );
       res.send(getHtmlSkeleton(_markup, data));
