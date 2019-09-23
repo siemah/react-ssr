@@ -43,7 +43,6 @@ function getHtmlSkeleton(markup, helmetData, data=null) {
   return `<!DOCTYPE html>
     <html>
       <head>
-        <title>React SSR app</title>
         ${ helmetData.title.toString() }
         ${ helmetData.meta.toString() }
         <script src="/bundle.js" defer></script>
