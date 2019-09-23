@@ -1,4 +1,5 @@
 import React, { useState, useEffect, } from 'react'
+import Helmet from "react-helmet"
 
 export default class  Book extends React.Component {
 
@@ -44,6 +45,11 @@ export default class  Book extends React.Component {
 
     return (
       <div style={{margin: '5%'}}>
+        <Helmet>
+          <title>Find Books you search for it</title>
+          <meta name='description' content='find any kind of book no matter who the author' />
+          <meta property='og:title' content='find any kind of book no matter who the author' />
+        </Helmet>
         <h1>Book list</h1>
         {
           loading && <h4>Loading ..</h4>

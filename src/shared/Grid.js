@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Helmet from "react-helmet"
 
 export default class Grid extends Component {
   constructor(props) {
@@ -43,6 +44,11 @@ export default class Grid extends Component {
 
     return (
       <ul style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Helmet>
+          <title>{this.props.match.params.id} Popular repos</title>
+          <meta name='description' content='Popular repos' />
+          <meta property='og:title' content='Popular repos' />
+        </Helmet>
         {
           loading
             ? <h4>Loading ..</h4>
