@@ -11,3 +11,19 @@ export function fetchPopularRepos (language = 'all') {
       return null
     });
 }
+
+/**
+ * retrieve a list of all books
+ * @param {string} book mayeb slug or book id
+ */
+export function fetchBook (book='') {
+  const encodedURI = encodeURI(`http://localhost:3001/books`)
+
+  return fetch(encodedURI)
+    .then((data) => data.json())
+    .then((books) => books.books)
+    .catch((error) => {
+      console.warn(error)
+      return null
+    });
+}
