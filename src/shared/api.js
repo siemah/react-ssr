@@ -17,11 +17,18 @@ export function fetchPopularRepos (language = 'all') {
  * @param {string} book mayeb slug or book id
  */
 export function fetchBook (book='') {
-  const encodedURI = encodeURI(`http://localhost:3001/books`)
+  const endpoint = !!book
+    ? `http://localhost:3001/book/${book}` 
+    : `http://localhost:3001/books/`;
+  const encodedURI = encodeURI(endpoint)
+  console.log('book id ', endpoint)
 
   return fetch(encodedURI)
     .then((data) => data.json())
-    .then((books) => books.books)
+    .then((books) => {
+      if(!!book) return books 
+      return books.books
+    })
     .catch((error) => {
       console.warn(error)
       return null
