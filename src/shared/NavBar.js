@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-export default function Navbar () {
+export default function Navbar() {
   const languages = [{
     name: 'All',
     param: 'all'
@@ -21,14 +21,19 @@ export default function Navbar () {
 
   return (
     <ul>
-       <li>
-          <NavLink activeStyle={{fontWeight: 'bold'}} to={`/books`}>
-            books
+      <li>
+        <NavLink activeStyle={{ fontWeight: 'bold' }} to={`/books`}>
+          books
+          </NavLink>
+      </li>
+      <li>
+        <NavLink activeStyle={{ fontWeight: 'bold' }} to={`/login`}>
+          Login
           </NavLink>
       </li>
       {languages.map(({ name, param }) => (
         <li key={param}>
-          <NavLink activeStyle={{fontWeight: 'bold'}} to={`/popular/${param}`}>
+          <NavLink activeStyle={{ fontWeight: 'bold' }} to={`/popular/${param}`}>
             {name}
           </NavLink>
         </li>
