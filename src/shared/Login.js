@@ -1,8 +1,11 @@
-import React, { useState, } from 'react'
+import React, { useState, useContext, } from 'react'
 import Helmet from 'react-helmet'
 import AuthContext from './context/Auth';
 
 export default function Login({ fetchCredentials, }) {
+
+  const authContext = useContext(AuthContext);
+
   const [credentials, setCredentials] = useState({
     email: null,
     password: null,
@@ -23,6 +26,7 @@ export default function Login({ fetchCredentials, }) {
     fetchCredentials(evn.target.action, credentials)
       .then(_res => {
         setState({ loading: false, message: null})
+        authContext.setAuth(_res.user);
       })
       .catch(({ message }) => {
         setState({ loading: false, message})
