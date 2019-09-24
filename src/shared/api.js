@@ -39,13 +39,20 @@ export function fetchBook (book='') {
     });
 }
 
-export function fetchLoginCredentials (credentials) {
-  const endpoint = `http://localhost:3004/auth/login`;
+/**
+ * send a request to login
+ * @param {string} endpoint link to endpoint
+ * @param {object} credentials contains auth credentials
+ */
+export function fetchLoginCredentials (endpoint, credentials) {
   const encodedURI = encodeURI(endpoint)
 
   return fetch(encodedURI, {
     method: 'POST',
     body: JSON.stringify(credentials),
+    headers: {
+      'Content-Type': 'application/json',
+    }
   })
     .then((data) => data.json())
     .then(res => res)
